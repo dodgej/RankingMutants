@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="d3-timeline.js"></script>
+
+    <style type="text/css">
+        .axis path,
+        .axis line {
+          fill: none;
+          stroke: black;
+          shape-rendering: crispEdges;
+        }
+        .axis text {
+          font-family: sans-serif;
+          font-size: 18px;
+        }
+        .timeline-label {
+          font-family: sans-serif;
+          font-size:22px;
+        }
+
+    </style>
+    <script type="text/javascript">
+        window.onload = function() {
+            var colorScale = d3.scale.ordinal()
+            .range([
+                '#2171b5','#6baed6','#bdd7e7',
+                '#238b45','#74c476','#bae4b3',
+                '#6a51a3','#9e9ac8','#cbc9e2'])
+            .domain([
+                'Rewind Slider','Board Highlights','Expl. Highlights',
+                'StTime showing', 'SMult showing', 'BtoW showing',
+                'Change xAgent', 'New Game', 'Step']);
+
+        var chart = d3.timeline()
+            .beginning(8* 60 * 60 * 1000) // we can optionally add beginning and ending times to speed up rendering a little
+            .ending(9.63* 60 * 60 * 1000) // base is 2 hours, minus 15 because tutorial took some time and that keeps separator. plus a little to get the #s in the pic
+            .tickFormat({
+                format: d3.time.format("%H:%M"),
+                tickSize: 2
+            })
+            .colors(colorScale)
+            .colorProperty('UIcomponent')
+            .showTimeAxisTick() // toggles tick marks
+            .stack() // toggles graph stacking
+            .margin({left:162, right:5, top:0, bottom:0});
